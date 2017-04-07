@@ -1,0 +1,8 @@
+{
+  "name": "kitsu-post-bumper",
+  "version": "0.1.0",
+  "main": "main.js",
+  "repository": "https://github.com/wopian/kitsu-post-bumper",
+  "author": "James Harris <wopian@wopian.me>",
+  "license": "MIT"
+}

@@ -26,6 +26,8 @@
     "client-oauth2": "~4.0.0",
     "devour-client": "~1.4.1",
     "eslint": "~3.19.0",
+    "humanize-duration": "~3.10.0",
+    "moment": "~2.18.1",
     "ora": "~1.2.0",
     "standard": "~10.0.1"
   }

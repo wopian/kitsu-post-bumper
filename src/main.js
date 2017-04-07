@@ -1,6 +1,8 @@
 import OAuth2 from 'client-oauth2'
 import JsonApi from 'devour-client'
 import Ora from 'ora'
+import moment from 'moment'
+import duration from 'humanize-duration'
 import { version } from '../package'
 import { env } from './env'
 
@@ -39,9 +41,8 @@ Kitsu.define('comment', {
   }
 })
 
-const main = async () => {
-  const ora = await Ora({ color: 'yellow', text: 'Authorising' }).start()
-
+const main = async (ora) => {
+  ora.text = await 'Authorising'
   let { accessToken } = await auth.owner.getToken(env.USERNAME, env.PASSWORD)
 
   Kitsu.headers['Authorization'] = `Bearer ${accessToken}`
@@ -83,16 +84,20 @@ const main = async () => {
         await ora.start()
       }
     }
-
-    // await console.log(await response)
   }
-
-  await ora.stop()
 }
 
 (() => {
-  main()
+  const ora = Ora({ color: 'yellow', text: 'Starting' }).start()
+  let next = moment().add(30, 'm')
+  let now = duration(next.diff(moment()), { delimiter: ' and ', round: true })
   setInterval(async () => {
-    await main()
-  }, 1800000)
+    if (next.diff(await moment()) >= -50) {
+      now = await duration(next.diff(await moment()), { delimiter: ' and ', round: true })
+      ora.text = await `Bumping in ${now}`
+    } else {
+      next = await moment().add(30, 'm')
+      await main(ora)
+    }
+  }, 1000)
 })()
